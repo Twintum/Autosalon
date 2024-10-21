@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\{MainController, CarController,
-    AdminController};
+    ModelController, MarkController};
 
 Route::controller(MainController::class)->group(function () {
     Route::get('/', 'index')->name('index');
@@ -20,7 +20,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(IsAdmin::class)->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::controller(MarkController::class)->group(function () {
+        Route::get('/admin/marks', 'index')->name('mark.index');
+        Route::post('/admin/marks', 'upload')->name('mark.upload');
+        Route::delete('/admin/marks', 'destroy')->name('mark.destroy');
+        Route::patch('/admin/marks', 'update')->name('mark.update');
+        Route::post('/admin/marks/search', 'search')->name('mark.search');
+    });
+    Route::controller(ModelController::class)->group(function () {
+        Route::get('/admin/models', 'index')->name('model.index');
+    });
 });
 
 
