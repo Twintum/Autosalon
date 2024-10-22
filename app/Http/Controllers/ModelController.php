@@ -11,7 +11,7 @@ class ModelController extends Controller
 {
     public function index(): View {
         return view('admin.admin-model', [
-            'models' => CarModel::with('mark')->paginate(5),
+            'models' => CarModel::whereDoesntHave('orders')->with('mark')->paginate(5),
             'mark' => Mark::all(),
         ]);
     }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CarModel;
 use App\Models\Mark;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 
@@ -14,13 +16,13 @@ class MainController extends Controller
     {
         return view('index', [
             'mark' => Mark::all(),
-            'models' => CarModel::with('mark')->get()
+            'models' => $models = CarModel::whereDoesntHave('orders')->with('mark')->get()
         ]);
     }
 
     public function product(int $id): View {
         return view('catalog.product', [
-            'model' => CarModel::with('mark')->find($id)
+            'model' => CarModel::whereDoesntHave('orders')->with('mark')->findOrFail($id)
         ]);
     }
 

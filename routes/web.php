@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
-use App\Http\Controllers\{MainController, CarController,
+use App\Http\Controllers\{MainController, OrderController,
     ModelController, MarkController};
 
 Route::controller(MainController::class)->group(function () {
@@ -15,6 +15,13 @@ Route::controller(MainController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/order', 'index')->name('order.index');
+        Route::get('/admin/order', 'admin')->middleware(IsAdmin::class)->name('admin.order.index');
+        Route::patch('/admin/order', 'delivered')->middleware(IsAdmin::class)->name('order.delivered');
+        Route::post('/order', 'upload')->name('order.upload');
+        Route::delete('/order', 'destroy')->name('order.destroy');
+    });
 });
 
 Route::middleware(IsAdmin::class)->group(function () {

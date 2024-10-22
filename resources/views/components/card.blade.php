@@ -51,10 +51,13 @@
             <a href="{{ route('product', ['id' => $model->id]) }}">
                 <span class='w-full flex-1 text-black dark:text-white text-[14px] leading-[17px] font-bold border border-gray-200 rounded-lg p-2'>Открыть</span>
             </a>
-
-            <button>
-                <span class='w-full flex-1 text-white text-[14px] leading-[17px] bg-primary-700 font-bold rounded-lg p-2 hover:bg-primary-800'>Забронировать</span>
-            </button>
+            <form action="{{ route('order.upload') }}" method="POST">
+                @csrf
+                <input name="id" value="{{ $model->id }}" class="hidden">
+                <button>
+                    <span class='w-full flex-1 text-white text-[14px] leading-[17px] bg-primary-700 font-bold rounded-lg p-2 hover:bg-primary-800'>Забронировать</span>
+                </button>
+            </form>
         </div>
     </div>
 </div>
