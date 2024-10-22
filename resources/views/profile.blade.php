@@ -19,9 +19,13 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ __('Выход из аккаунта') }}
                 </h2>
-                <x-primary-button class="bg-primary-700 mt-6 hover:bg-primary-800">Выход</x-primary-button>
+                <x-primary-button class="bg-primary-700 mt-6 hover:bg-primary-800" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">Выход</x-primary-button>
             </div>
 
         </div>
     </div>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
 @endsection

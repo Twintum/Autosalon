@@ -19,7 +19,7 @@
                     <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                     </svg>
-                    Actions
+                    Коробка передач
                 </button>
                 <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -46,37 +46,18 @@
                 <!-- Dropdown menu -->
                 <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                        Category
+                        Марка
                     </h6>
                     <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                        <li class="flex items-center">
-                            <input id="apple" type="checkbox" value=""
-                                   class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                            <label for="apple" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                Apple (56)
-                            </label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="fitbit" type="checkbox" value=""
-                                   class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                            <label for="fitbit" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                Fitbit (56)
-                            </label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="dell" type="checkbox" value=""
-                                   class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                            <label for="dell" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                Dell (56)
-                            </label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="asus" type="checkbox" value="" checked
-                                   class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                            <label for="asus" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                Asus (97)
-                            </label>
-                        </li>
+                        @foreach($marks as $mark)
+                            <li class="flex items-center">
+                                <input id="{{ $mark->id }}" type="checkbox" value="{{ $mark->id }}"
+                                       class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                <label for="{{ $mark->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    {{ $mark->name }}
+                                </label>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

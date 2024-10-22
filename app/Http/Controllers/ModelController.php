@@ -48,4 +48,17 @@ class ModelController extends Controller
         CarModel::destroy($validatedData['id']);
         return redirect()->back();
     }
+
+    public function search(Request $request) {
+        $validate = $request->validate([
+            'word' => 'required|string|max:255',
+        ]);
+
+        $word = $request->input('word');
+
+        return view('admin.admin-model', [
+            'models' => CarModel::where('model', 'like', '%' . $word . '%')->paginate(5),
+            'mark' => Mark::all(),
+        ]);
+    }
 }
