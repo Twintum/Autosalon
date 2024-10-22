@@ -14,4 +14,9 @@ class CarModel extends Model
     {
         return $this->belongsTo(Mark::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'model_id');
+    }
 }
