@@ -30,8 +30,9 @@ Route::middleware(IsAdmin::class)->group(function () {
     Route::controller(ModelController::class)->group(function () {
         Route::get('/admin/models', 'index')->name('model.index');
         Route::post('/admin/models', 'upload')->name('model.upload');
-        Route::delete('/admin/models', 'destroy')->name('model.destroy');
         Route::post('/admin/models/search', 'search')->name('model.search');
+        Route::delete('/admin/models', 'destroy')->name('model.destroy');
+        Route::patch('/admin/models', 'update')->name('model.update');
     });
 });
 
