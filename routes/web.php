@@ -8,10 +8,8 @@ use App\Http\Controllers\{MainController, CarController,
 
 Route::controller(MainController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-});
-
-Route::controller(CarController::class)->group(function () {
-    Route::get('/catalog/{id}', 'index')->name('catalog.index');
+    Route::get('/model/{id}', 'product')->name('product');
+    Route::post('/filter}', 'filter')->name('filter');
 });
 
 Route::middleware('auth')->group(function () {

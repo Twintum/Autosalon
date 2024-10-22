@@ -5,10 +5,22 @@
         </h2>
     </div>
 
-    <p class='flex mt-6 text-[24px] leading-[38px] font-extrabold'>
-        <span class='self-start text-[14px] leading-[17px] font-semibold'>₽</span>
-        {{ $model->price }}
-    </p>
+    @if($model->discount == 0)
+        <p
+            class="flex mt-6 text-[24px] leading-[38px] font-extrabold"
+        >
+            ₽{{ $model->price }}
+        </p>
+    @else
+        <p  class="text-2xl font-extrabold text-primary-800 sm:text-3xl">
+            ₽{{ round($model->price - ($model->price * ($model->discount / 100))) }}
+        </p>
+        <p
+            class="flex text-[24px] leading-[38px] font-extrabold line-through"
+        >
+            ₽{{ $model->price }}
+        </p>
+    @endif
 
     <div class='relative w-full h-40 my-3 object-contain'>
         <img src="{{ asset('/storage/' . $model->photo) }}" alt="{{ $model->model }}">
@@ -36,7 +48,7 @@
             </div>
         </div>
         <div class="flex justify-between car-card__btn-container">
-            <a href="{{ route('catalog.index', ['id' => $model->id]) }}">
+            <a href="{{ route('product', ['id' => $model->id]) }}">
                 <span class='w-full flex-1 text-black dark:text-white text-[14px] leading-[17px] font-bold border border-gray-200 rounded-lg p-2'>Открыть</span>
             </a>
 
