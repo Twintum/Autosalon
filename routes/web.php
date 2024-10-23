@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\{MainController, OrderController,
-    ModelController, MarkController};
+    ModelController, MarkController, AdminController};
 
 Route::controller(MainController::class)->group(function () {
     Route::get('/', 'index')->name('index');
@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(IsAdmin::class)->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.exel');
+
     Route::controller(MarkController::class)->group(function () {
         Route::get('/admin/marks', 'index')->name('mark.index');
         Route::post('/admin/marks', 'upload')->name('mark.upload');
