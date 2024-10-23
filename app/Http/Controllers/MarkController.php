@@ -28,7 +28,7 @@ class MarkController extends Controller
             'photo' => $photoPath,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Марка успешно добавлена');
     }
 
     public function destroy(Request $request) {
@@ -39,7 +39,7 @@ class MarkController extends Controller
         $info = Mark::find($request->id);
         $info->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Марка успешно удалена');
     }
 
     public function update(Request $request) {
@@ -63,7 +63,7 @@ class MarkController extends Controller
             ]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Изменения успешно сохранены');
     }
 
     public function search(Request $request) {

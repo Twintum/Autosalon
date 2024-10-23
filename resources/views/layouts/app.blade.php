@@ -15,13 +15,66 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="dark:bg-gray-800">
+<body>
     @include('components.PageDetails.header')
     <main class="my-6">
         <div class="relative w-full mx-auto px-6 max-w-7xl">
             @yield('content')
         </div>
     </main>
+
+    @if(session('success'))
+        <div id="notification" class="fixed top-4 right-4 p-4 bg-green-500 text-white rounded-lg shadow-lg transition-opacity duration-300 ease-in-out opacity-0">
+            <div class="flex items-center">
+                <svg class="flex-shrink-0 w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="font-medium">{{ session('success') }}</span>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const notification = document.getElementById('notification');
+                if (notification) {
+                    notification.classList.remove('opacity-0');
+                    notification.classList.add('opacity-100');
+
+                    setTimeout(function() {
+                        notification.classList.remove('opacity-100');
+                        notification.classList.add('opacity-0');
+                    }, 5000); // Уведомление исчезнет через 5 секунд
+                }
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <div id="error-notification" class="fixed top-4 right-4 p-4 bg-red-500 text-white rounded-lg shadow-lg transition-opacity duration-300 ease-in-out opacity-0">
+            <div class="flex items-center">
+                <svg class="flex-shrink-0 w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="font-medium">{{ session('error') }}</span>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const errorNotification = document.getElementById('error-notification');
+                if (errorNotification) {
+                    errorNotification.classList.remove('opacity-0');
+                    errorNotification.classList.add('opacity-100');
+
+                    setTimeout(function() {
+                        errorNotification.classList.remove('opacity-100');
+                        errorNotification.classList.add('opacity-0');
+                    }, 5000); // Уведомление исчезнет через 5 секунд
+                }
+            });
+        </script>
+    @endif
+
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
 

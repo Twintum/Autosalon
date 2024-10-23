@@ -9,9 +9,24 @@ use App\Models\{Mark, CarModel};
 
 class ModelController extends Controller
 {
-    public function index(): View {
+    public function index(): View
+    {
+        $models = CarModel::whereDoesntHave('orders')
+            ->orWhereHas('orders', function ($query) {
+                $query->where('status', 'cancelled')
+                    ->latest()
+                    ->limit(1);
+            })
+            ->whereDoesntHave('orders', function ($query) {
+                $query->whereIn('status', ['pending', 'delivered'])
+                    ->latest()
+                    ->limit(1);
+            })
+            ->with('mark')
+            ->paginate(5);
+
         return view('admin.admin-model', [
-            'models' => CarModel::whereDoesntHave('orders')->with('mark')->paginate(5),
+            'models' => $models,
             'mark' => Mark::all(),
         ]);
     }
@@ -38,7 +53,7 @@ class ModelController extends Controller
         $car->photo = $photoPath;
         $car->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Модель успешно добавлена');
     }
 
     public function destroy(Request $request) {
@@ -46,7 +61,8 @@ class ModelController extends Controller
             'id' => 'required|integer|min:1',
         ]);
         CarModel::destroy($validatedData['id']);
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Модель успешно удалена');
     }
 
     public function update(Request $request) {
@@ -96,7 +112,7 @@ class ModelController extends Controller
                 'discount' => $request->discount,
             ]);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Изменения успешно сохранены');
     }
     public function search(Request $request) {
         $validate = $request->validate([

@@ -14,15 +14,44 @@ class MainController extends Controller
 {
     public function index(): View
     {
+        $models = CarModel::whereDoesntHave('orders')
+            ->orWhereHas('orders', function ($query) {
+                $query->where('status', 'cancelled')
+                    ->latest()
+                    ->limit(1);
+            })
+            ->whereDoesntHave('orders', function ($query) {
+                $query->whereIn('status', ['pending', 'delivered'])
+                    ->latest()
+                    ->limit(1);
+            })
+            ->get();
+
         return view('index', [
             'mark' => Mark::all(),
-            'models' => $models = CarModel::whereDoesntHave('orders')->with('mark')->get()
+            'models' => $models
         ]);
     }
-
     public function product(int $id): View {
+        // Получаем модель автомобиля с маркой
+        $carModel = CarModel::with('mark')->find($id);
+
+        // Проверяем, существует ли модель
+        if (!$carModel) {
+            abort(404); // Если модель не найдена, возвращаем 404
+        }
+
+        // Проверяем наличие заказов со статусами 'pending' или 'delivered'
+        $hasActiveOrders = $carModel->orders()->whereIn('status', ['pending', 'delivered'])->exists();
+
+        // Если есть активные заказы, возвращаем 404
+        if ($hasActiveOrders) {
+            abort(404);
+        }
+
+        // Если нет активных заказов, отображаем страницу продукта
         return view('catalog.product', [
-            'model' => CarModel::whereDoesntHave('orders')->with('mark')->findOrFail($id)
+            'model' => $carModel
         ]);
     }
 
@@ -47,6 +76,19 @@ class MainController extends Controller
         if (!empty($selectedMarks)) {
             $query->whereIn('mark_id', $selectedMarks);
         }
+
+        // Логика с заказами
+        $query->whereDoesntHave('orders')
+            ->orWhereHas('orders', function ($query) {
+                $query->where('status', 'cancelled')
+                    ->latest()
+                    ->limit(1);
+            })
+            ->whereDoesntHave('orders', function ($query) {
+                $query->whereIn('status', ['pending', 'delivered'])
+                    ->latest()
+                    ->limit(1);
+            });
 
         $cars = $query->get();
 
