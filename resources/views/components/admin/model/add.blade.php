@@ -9,90 +9,73 @@
         @csrf
         <div class="space-y-4">
             <div>
-                <label for="discount-create" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Марка</label>
+                <label for="mark_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Марка</label>
                 <select id="discount-create" name="mark_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     @foreach($mark as $item)
                         <option value="{{ $item->id }}" {{ old('mark') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                     @endforeach
                 </select>
-                @error('mark')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
             <div>
                 <label for="model" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Модель</label>
                 <input type="text" name="model" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Модель" required="">
-                @error('model')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
             <div>
                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Цена</label>
                 <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="₽500000" required="">
-                @error('price')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
-                    <input id="dropzone-file-add" type="file" class="" name="photo" />
-                @error('photo')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+
+            <div class="flex items-center justify-center w-full">
+                <label for="file-add-model" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                        </svg>
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Нажмите чтобы загрузить файл</span></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">JPEG, PNG, JPG</p>
+                    </div>
+                    <input id="file-add-model" type="file" class="hidden" name="photo" />
+                </label>
+            </div>
+
             <div>
                 <label for="fuel_tank" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Цвет</label>
                 <input type="text" name="color" id="color" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Цвет" required="">
-                @error('color')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
                 <label for="fuel_tank" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Объем бака</label>
                 <input type="number" name="fuel_tank" id="fuel_tank" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="80" required="">
-                @error('fuel_tank')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
-                <label for="fuel_tank" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Пробег</label>
+                <label for="mileage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Пробег</label>
                 <input type="number" name="mileage" id="mileage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                @error('mileage')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
-                <label for="fuel_tank" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Год</label>
+                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Год</label>
                 <input type="number" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                @error('year')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
-                <label for="category-create" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Коробка передач</label>
+                <label for="transmission" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Коробка передач</label>
                 <select id="category-create" name="transmission" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     <option selected="">Выберите тип</option>
                     <option value="automatic">Автомат</option>
                     <option value="mechanic">Маханика</option>
                     <option value="robot">Робот</option>
                 </select>
-                @error('transmission')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
-                <label for="drive-create" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Привод</label>
+                <label for="drive" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Привод</label>
                 <select id="drive-create" name="drive" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     <option selected="">Выберите привод</option>
                     <option value="FWD">FWD</option>
                     <option value="RWD">RWD</option>
                     <option value="AWD">AWD</option>
                 </select>
-                @error('drive')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div>
-                <label for="discount-create" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Скидка</label>
+                <label for="discount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Скидка</label>
                 <select id="discount-create" name="discount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     <option value="0">Нет</option>
                     <option value="5">5%</option>
@@ -102,9 +85,6 @@
                     <option value="40">40%</option>
                     <option value="50">50%</option>
                 </select>
-                @error('discount')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
             <div class="left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
                 <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">

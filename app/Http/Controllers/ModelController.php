@@ -11,11 +11,18 @@ class ModelController extends Controller
 {
     public function index(): View
     {
-        $models = CarModel::whereDoesntHave('orders')
-            ->orWhereHas('orders', function ($query) {
-                $query->where('status', 'cancelled')
-                    ->latest()
-                    ->limit(1);
+        // Получаем все марки, где visibility = true
+        $marks = Mark::where('visibility', true)->pluck('id');
+
+        // Получаем модели автомобилей, которые соответствуют условиям
+        $models = CarModel::whereIn('mark_id', $marks)
+            ->where(function ($query) {
+                $query->whereDoesntHave('orders')
+                    ->orWhereHas('orders', function ($query) {
+                        $query->where('status', 'cancelled')
+                            ->latest()
+                            ->limit(1);
+                    });
             })
             ->whereDoesntHave('orders', function ($query) {
                 $query->whereIn('status', ['pending', 'delivered'])
@@ -25,9 +32,15 @@ class ModelController extends Controller
             ->with('mark')
             ->paginate(5);
 
+        $item = Mark::where('visibility', true)->get();
+        if (!$item) {
+            $item = null;
+        }
+
         return view('admin.admin-model', [
             'models' => $models,
-            'mark' => Mark::all(),
+            'mark' => $item,
+            'item' => null,
         ]);
     }
 
@@ -36,7 +49,7 @@ class ModelController extends Controller
             'mark_id' => 'required|integer',
             'model' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'color' => 'required|string|max:255',
             'fuel_tank' => 'required|numeric|min:0',
             'mileage' => 'required|numeric|min:0',

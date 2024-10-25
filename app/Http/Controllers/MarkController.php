@@ -10,7 +10,7 @@ class MarkController extends Controller
 {
     public function index(): View {
         return view('admin.admin-mark',[
-            'marks'=>Mark::all()
+            'marks'=>Mark::where('visibility', true)->get()
         ]);
     }
     public function upload(Request $request) {
@@ -37,9 +37,15 @@ class MarkController extends Controller
         ]);
 
         $info = Mark::find($request->id);
-        $info->delete();
 
-        return redirect()->back()->with('success', 'Марка успешно удалена');
+        if ($info) {
+            $info->visibility = false;
+            $info->save();
+
+            return redirect()->back()->with('success', 'Марка успешно скрыта');
+        } else {
+            return redirect()->back()->with('error', 'Марка не найдена');
+        }
     }
 
     public function update(Request $request) {

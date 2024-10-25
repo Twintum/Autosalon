@@ -14,11 +14,18 @@ class MainController extends Controller
 {
     public function index(): View
     {
-        $models = CarModel::whereDoesntHave('orders')
-            ->orWhereHas('orders', function ($query) {
-                $query->where('status', 'cancelled')
-                    ->latest()
-                    ->limit(1);
+        // Получаем все марки, где visibility = true
+        $marks = Mark::where('visibility', true)->pluck('id');
+
+        // Получаем модели автомобилей, которые соответствуют условиям
+        $models = CarModel::whereIn('mark_id', $marks)
+            ->where(function ($query) {
+                $query->whereDoesntHave('orders')
+                    ->orWhereHas('orders', function ($query) {
+                        $query->where('status', 'cancelled')
+                            ->latest()
+                            ->limit(1);
+                    });
             })
             ->whereDoesntHave('orders', function ($query) {
                 $query->whereIn('status', ['pending', 'delivered'])
@@ -28,7 +35,7 @@ class MainController extends Controller
             ->get();
 
         return view('index', [
-            'mark' => Mark::all(),
+            'mark' => Mark::where('visibility', true)->get(),
             'models' => $models
         ]);
     }
