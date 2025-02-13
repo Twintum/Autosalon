@@ -30,17 +30,25 @@ class MarkTest extends TestCase
      */
     public function test_upload_mark(): void
     {
+        // Создаем администратора
         $user = User::factory()->admin()->create();
-
+        
+        // Фейк хранилища для тестирования загрузки файлов
         Storage::fake('public');
+        // Подготавливаем фейковый файл изображения
         $file = UploadedFile::fake()->image('photo.svg');
+        // Данные для отправки
         $data = [
             'name' => 'Test Mark',
             'photo' => $file,
         ];
+        // Выполняем запрос на загрузку марки
         $response = $this->actingAs($user)->post(route('mark.upload'), $data);
+        // Проверяем, что произошло перенаправление
         $response->assertRedirect();
+        // Проверяем наличие сообщения об успехе в сессии
         $response->assertSessionHas('success', 'Марка успешно добавлена');
+        // Проверяем, что запись о новой марке была добавлена в базу данных
         $this->assertDatabaseHas('marks', [
             'name' => 'Test Mark',
         ]);
