@@ -55,7 +55,7 @@ class MarkTest extends TestCase
     }
 
     /**
-     * Проверка удаления модели
+     * Проверка удаления модели рр
      */
     public function test_mark_can_be_hidden()
     {
